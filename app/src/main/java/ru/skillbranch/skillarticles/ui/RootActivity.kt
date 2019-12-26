@@ -4,7 +4,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.Toolbar
+import androidx.appcompat.app.AppCompatDelegate
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_root.*
+import kotlinx.android.synthetic.main.layout_bottombar.*
+import kotlinx.android.synthetic.main.layout_submenu.*
 import ru.skillbranch.skillarticles.R
 import ru.skillbranch.skillarticles.extensions.dpToIntPx
 import ru.skillbranch.skillarticles.extensions.dpToPx
@@ -15,6 +19,15 @@ class RootActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_root)
         setupToolbar()
+        btn_like.setOnClickListener {
+            Snackbar.make(coordinator_container, "test", Snackbar.LENGTH_LONG)
+                .setAnchorView(bottombar)
+                .show()
+        }
+
+        switch_mode.setOnClickListener {
+            delegate.localNightMode = if (switch_mode.isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+        }
     }
 
     private fun setupToolbar() {
