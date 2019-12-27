@@ -38,6 +38,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <ru.skillbranch.skillarticles.ui.custom.ArticleSubmenu
+        android:visibility="invisible"
         android:theme="@style/ArticleBarsTheme"
         android:id="@+id/submenu"
         style="@style/ArticleBarsTheme"
