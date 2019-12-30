@@ -6,6 +6,7 @@ import ru.skillbranch.skillarticles.data.ArticleData
 import ru.skillbranch.skillarticles.data.ArticlePersonalInfo
 import ru.skillbranch.skillarticles.data.repositories.ArticleRepository
 import ru.skillbranch.skillarticles.extensions.data.toAppSettings
+import ru.skillbranch.skillarticles.extensions.data.toArticlePersonalInfo
 import ru.skillbranch.skillarticles.extensions.format
 
 class ArticleViewModel (private val articleId:String) : BaseViewModel<ArticleState>(ArticleState()), IArticleViewModel {
@@ -55,12 +56,31 @@ class ArticleViewModel (private val articleId:String) : BaseViewModel<ArticleSta
 
     override fun getArticlePersonalInfo():LiveData<ArticlePersonalInfo?> = repository.loadArticlePersonalInfo(articleId)
 
-    override fun handleLike() = updateState { it.copy(isLike = !it.isLike) }
+    override fun handleLike(){
+        val toggleLike = {
+            val info = currentState.toArticlePersonalInfo()
+            repository.updateArticlePersonalInfo(info.copy(isLike = !info.isLike))
+        }
+
+        toggleLike()
+
+        val msg = if (currentState.isLike) Notify.TextMessage("Mark is liked")
+        else {
+            Notify.ActionMessage(
+                "Don`t like it anymore",
+                "No, still like it",
+                toggleLike
+            )
+        }
+
+        notify(msg)
+    }
 
     override fun handleBookmark() = updateState { it.copy(isBookmark = !it.isBookmark) }
 
     override fun handleShare(){
-
+        val msg = "Share is not implemented"
+        notify(Notify.ErrorMessage(msg, "OK", null))
     }
 
     override fun handleToggleMenu() = updateState {it.copy(isShowMenu = !it.isShowMenu)}

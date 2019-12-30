@@ -126,7 +126,7 @@ sealed class Notify(val message: String) {
     data class ActionMessage(
         val msg: String,
         val actionLabel: String,
-        val actionHandler: (() -> Unit)
+        val actionHandler: (() -> Unit)?
     ) : Notify(msg)
 
     data class ErrorMessage(
