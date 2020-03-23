@@ -1,15 +1,17 @@
 package ru.skillbranch.skillarticles.viewmodels
 
 import androidx.lifecycle.LiveData
-import kotlinx.android.synthetic.main.layout_submenu.*
 import ru.skillbranch.skillarticles.data.ArticleData
 import ru.skillbranch.skillarticles.data.ArticlePersonalInfo
+import ru.skillbranch.skillarticles.data.ArticleState
 import ru.skillbranch.skillarticles.data.repositories.ArticleRepository
 import ru.skillbranch.skillarticles.extensions.data.toAppSettings
 import ru.skillbranch.skillarticles.extensions.data.toArticlePersonalInfo
 import ru.skillbranch.skillarticles.extensions.format
 
-class ArticleViewModel (private val articleId:String) : BaseViewModel<ArticleState>(ArticleState()), IArticleViewModel {
+class ArticleViewModel (private val articleId:String) : BaseViewModel<ArticleState>(
+    ArticleState()
+), IArticleViewModel {
     private val repository = ArticleRepository
 
     init {
