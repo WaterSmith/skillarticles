@@ -53,8 +53,12 @@ object LocalDataHolder {
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
-    fun disableDelay() {
-        isDalay = false
+    fun disableDelay(stateOfIsDalay:Boolean = false) {
+        isDalay = stateOfIsDalay
+    }
+
+    fun clearData() {
+        articleData.postValue(null)
     }
 }
 
@@ -72,8 +76,12 @@ object NetworkDataHolder {
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
-    fun disableDelay() {
-        isDelay = false
+    fun disableDelay(stateOfIsDalay:Boolean = false) {
+        isDelay = stateOfIsDalay
+    }
+
+    fun clearData() {
+        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
 
