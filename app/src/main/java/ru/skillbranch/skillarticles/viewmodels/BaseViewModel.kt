@@ -3,7 +3,6 @@ package ru.skillbranch.skillarticles.viewmodels
 import androidx.annotation.UiThread
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.*
-import ru.skillbranch.skillarticles.viewmodels.base.Notify
 
 abstract class BaseViewModel<T>(initState: T) : ViewModel() {
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
@@ -119,4 +118,20 @@ class EventObserver<E>(private val onEventUnhandledContent: (E) -> Unit) : Obser
             onEventUnhandledContent(it)
         }
     }
+}
+
+sealed class Notify(val message: String) {
+    data class TextMessage(val msg: String) : Notify(msg)
+
+    data class ActionMessage(
+        val msg: String,
+        val actionLabel: String,
+        val actionHandler: (() -> Unit)?
+    ) : Notify(msg)
+
+    data class ErrorMessage(
+        val msg: String,
+        val errLabel: String?,
+        val errHandler: (() -> Unit)?
+    ) : Notify(msg)
 }
