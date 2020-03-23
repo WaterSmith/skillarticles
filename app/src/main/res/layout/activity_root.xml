@@ -38,17 +38,18 @@
     </androidx.core.widget.NestedScrollView>
 
     <ru.skillbranch.skillarticles.ui.custom.ArticleSubmenu
-        android:visibility="invisible"
+        android:visibility="gone"
         android:theme="@style/ArticleBarsTheme"
         android:id="@+id/submenu"
         style="@style/ArticleBarsTheme"
         android:layout_width="200dp"
         android:layout_height="96dp"
-        android:layout_gravity="bottom|right"
-        android:layout_marginRight="8dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_dodgeInsetEdges="bottom"
-        android:elevation="4dp"/>
+        android:elevation="8dp"
+        tools:visibility="visible"/>
 
     <ru.skillbranch.skillarticles.ui.custom.Bottombar
         android:id="@+id/bottombar"

@@ -1,8 +1,7 @@
 package ru.skillbranch.skillarticles
 
 import org.junit.Test
-
-import org.junit.Assert.*
+import java.util.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -12,6 +11,15 @@ import org.junit.Assert.*
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+        val numbers = Array(5){
+            255+it
+        }
+        numbers.forEach {
+            println(it)
+        }
+
+        val today = GregorianCalendar.getInstance()
+        println(today[GregorianCalendar.YEAR]-1)
+        d
     }
 }
