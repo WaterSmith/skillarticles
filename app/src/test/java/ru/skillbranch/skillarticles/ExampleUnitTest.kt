@@ -20,6 +20,5 @@ class ExampleUnitTest {
 
         val today = GregorianCalendar.getInstance()
         println(today[GregorianCalendar.YEAR]-1)
-        d
     }
 }
