@@ -42,7 +42,7 @@ class ArticleViewModel (private val articleId:String) : BaseViewModel<ArticleSta
         }
 
         subscribeOnDataSource(repository.getAppSettings()){settings, state ->
-            settings ?: return@subscribeOnDataSource null
+            //settings ?: return@subscribeOnDataSource null
             state.copy(
                 isBigText = settings.isBigText,
                 isDarkMode = settings.isDarkMode
@@ -92,11 +92,15 @@ class ArticleViewModel (private val articleId:String) : BaseViewModel<ArticleSta
     override fun handleToggleMenu() = updateState {it.copy(isShowMenu = !it.isShowMenu)}
 
     override fun handleSearchMode(isSearch: Boolean) {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        updateState {
+            it.copy(isSearch = isSearch)
+        }
     }
 
     override fun handleSearch(query: String?) {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        updateState {
+            it.copy(searchQuery = query)
+        }
     }
 
     override fun handleUpText(){

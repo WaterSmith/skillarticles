@@ -2,8 +2,11 @@ package ru.skillbranch.skillarticles.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
@@ -20,6 +23,7 @@ import ru.skillbranch.skillarticles.viewmodels.Notify
 class RootActivity : AppCompatActivity() {
 
     private lateinit var viewModel: ArticleViewModel
+    private lateinit var articleState: ArticleState
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +40,43 @@ class RootActivity : AppCompatActivity() {
         viewModel.observeNotifications(this){
             renderNotification(it)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_search, menu)
+        val searchItem = menu.findItem(R.id.action_search)
+        val searchView = searchItem.actionView as SearchView
+        searchView.queryHint = "Search"
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (!query.isNullOrEmpty()) viewModel.handleSearch(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (!newText.isNullOrEmpty()) viewModel.handleSearch(newText)
+                return true
+            }
+        })
+        searchView.setOnSearchClickListener{
+            viewModel.handleSearchMode(true)
+        }
+        searchView.setOnCloseListener {
+            //viewModel.handleSearch(null)
+            viewModel.handleSearchMode(false)
+            true
+        }
+
+        if (articleState.isSearch) {
+            searchView.post {
+                searchView.onActionViewExpanded()
+               //Log.d("SearchQuery","Try to set query as: ${articleState.searchQuery}")
+                searchView.setQuery(articleState.searchQuery,false)
+                searchView.clearFocus()
+            }
+        }
+
+        return true
     }
 
     private fun renderNotification(notify: Notify) {
@@ -82,6 +123,8 @@ class RootActivity : AppCompatActivity() {
         toolbar.subtitle = state.category ?: "loading"
 
         if (state.categoryIcon!=null) toolbar.logo = getDrawable(state.categoryIcon as Int)
+
+        articleState = state
     }
 
     private fun setupBottombar() {
