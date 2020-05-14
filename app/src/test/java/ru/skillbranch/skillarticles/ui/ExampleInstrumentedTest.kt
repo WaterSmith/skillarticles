@@ -2,11 +2,13 @@ package ru.skillbranch.skillarticles.ui
 
 import org.junit.Test
 
-import org.junit.Assert.*
+import ru.skillbranch.skillarticles.extensions.indexesOf
 
 class ExampleInstrumentedTest {
 
     @Test
-    fun onCreate() {
+    fun indexesOfSubstring() {
+        println("lorem ipsum sum".indexesOf("sum").toString())
+
     }
 }
