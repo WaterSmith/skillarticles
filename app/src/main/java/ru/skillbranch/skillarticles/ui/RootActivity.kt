@@ -2,8 +2,8 @@ package ru.skillbranch.skillarticles.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
@@ -23,7 +23,8 @@ import ru.skillbranch.skillarticles.viewmodels.Notify
 class RootActivity : AppCompatActivity() {
 
     private lateinit var viewModel: ArticleViewModel
-    private lateinit var articleState: ArticleState
+    private var isSearching = false
+    private var searchQuery:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +36,8 @@ class RootActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this, vmFactory).get(ArticleViewModel::class.java)
         viewModel.observeState(this){
             renderUI(it)
+            isSearching = it.isSearch
+            searchQuery = it.searchQuery
         }
 
         viewModel.observeNotifications(this){
@@ -46,7 +49,30 @@ class RootActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.menu_search, menu)
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
-        searchView.queryHint = "Search"
+
+        searchView.queryHint = getString(R.string.article_search_placeholder)
+
+        if (isSearching) {
+            searchView.post {
+                searchItem.expandActionView()
+                searchView.onActionViewExpanded()
+                searchView.setQuery(searchQuery,false)
+                searchView.clearFocus()
+            }
+        }
+
+        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener{
+            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
+                viewModel.handleSearchMode(true)
+                return true
+            }
+
+            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+                viewModel.handleSearchMode(false)
+                return true
+            }
+        })
+
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (!query.isNullOrEmpty()) viewModel.handleSearch(query)
@@ -58,25 +84,8 @@ class RootActivity : AppCompatActivity() {
                 return true
             }
         })
-        searchView.setOnSearchClickListener{
-            viewModel.handleSearchMode(true)
-        }
-        searchView.setOnCloseListener {
-            //viewModel.handleSearch(null)
-            viewModel.handleSearchMode(false)
-            true
-        }
 
-        if (articleState.isSearch) {
-            searchView.post {
-                searchView.onActionViewExpanded()
-               //Log.d("SearchQuery","Try to set query as: ${articleState.searchQuery}")
-                searchView.setQuery(articleState.searchQuery,false)
-                searchView.clearFocus()
-            }
-        }
-
-        return true
+        return super.onCreateOptionsMenu(menu)
     }
 
     private fun renderNotification(notify: Notify) {
@@ -123,8 +132,6 @@ class RootActivity : AppCompatActivity() {
         toolbar.subtitle = state.category ?: "loading"
 
         if (state.categoryIcon!=null) toolbar.logo = getDrawable(state.categoryIcon as Int)
-
-        articleState = state
     }
 
     private fun setupBottombar() {
