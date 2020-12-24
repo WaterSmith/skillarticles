@@ -1,6 +1,5 @@
 package ru.skillbranch.skillarticles.ui.custom.behaviors
 
-import android.util.Log
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.math.MathUtils
@@ -28,10 +27,10 @@ class BottombarBehavior : CoordinatorLayout.Behavior<Bottombar>() {
         consumed: IntArray,
         type: Int
     ) {
-        val offset = MathUtils.clamp(child.translationY + dy, 0f, child.minHeight.toFloat())
-        if (offset!=child.translationY) child.translationY = offset
-
-        Log.e("BBB", "dy: $dy translationY: ${child.translationY}")
+        if(!child.isSearchMode){
+            val offset = MathUtils.clamp(child.translationY + dy, 0f, child.height.toFloat())
+            if (offset != child.translationY) child.translationY = offset
+        }
         super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed, type)
     }
 }
