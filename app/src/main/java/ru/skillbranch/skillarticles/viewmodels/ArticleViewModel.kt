@@ -63,6 +63,38 @@ class ArticleViewModel (private val articleId:String) : BaseViewModel<ArticleSta
 
     override fun getArticlePersonalInfo():LiveData<ArticlePersonalInfo?> = repository.loadArticlePersonalInfo(articleId)
 
+    override fun handleNightMode(){
+        val setting = currentState.toAppSettings()
+        repository.updateSettings(setting.copy(
+            isDarkMode = !setting.isDarkMode
+        ))
+    }
+
+    override fun handleUpText(){
+        val setting = currentState.toAppSettings()
+        repository.updateSettings(
+            setting.copy(
+                isBigText = true
+            )
+        )
+    }
+
+    override fun handleDownText(){
+        val setting = currentState.toAppSettings()
+        repository.updateSettings(
+            setting.copy(
+                isBigText = false
+            )
+        )
+    }
+
+    override fun handleBookmark(){
+        val textMessage = if (currentState.isBookmark) "Remove from bookmarks" else "Add to bookmarks"
+        val info = currentState.toArticlePersonalInfo()
+        repository.updateArticlePersonalInfo(info.copy(isBookmark = !info.isBookmark))
+        notify(Notify.TextMessage(textMessage))
+    }
+
     override fun handleLike(){
         val toggleLike = {
             val info = currentState.toArticlePersonalInfo()
@@ -81,13 +113,6 @@ class ArticleViewModel (private val articleId:String) : BaseViewModel<ArticleSta
         }
 
         notify(msg)
-    }
-
-    override fun handleBookmark(){
-        val textMessage = if (currentState.isBookmark) "Remove from bookmarks" else "Add to bookmarks"
-        val info = currentState.toArticlePersonalInfo()
-        repository.updateArticlePersonalInfo(info.copy(isBookmark = !info.isBookmark))
-        notify(Notify.TextMessage(textMessage))
     }
 
     override fun handleShare(){
@@ -110,29 +135,12 @@ class ArticleViewModel (private val articleId:String) : BaseViewModel<ArticleSta
         updateState { it.copy(searchQuery = query, searchResults = result, searchPosition = 0) }
     }
 
-    override fun handleUpText(){
-        val setting = currentState.toAppSettings()
-        repository.updateSettings(
-            setting.copy(
-                isBigText = true
-            )
-        )
+    fun handleUpResult() {
+        updateState { it.copy(searchPosition = it.searchPosition.dec()) }
     }
 
-    override fun handleDownText(){
-        val setting = currentState.toAppSettings()
-        repository.updateSettings(
-            setting.copy(
-                isBigText = false
-            )
-        )
-    }
-
-    override fun handleNightMode(){
-        val setting = currentState.toAppSettings()
-        repository.updateSettings(setting.copy(
-            isDarkMode = !setting.isDarkMode
-        ))
+    fun handleDownResult() {
+        updateState { it.copy(searchPosition = it.searchPosition.inc()) }
     }
 }
 

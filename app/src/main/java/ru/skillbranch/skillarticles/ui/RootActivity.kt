@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.layout_submenu.*
 import kotlinx.android.synthetic.main.search_view_layout.*
 import ru.skillbranch.skillarticles.R
 import ru.skillbranch.skillarticles.extensions.dpToIntPx
+import ru.skillbranch.skillarticles.extensions.setMarginOptionally
 import ru.skillbranch.skillarticles.ui.base.BaseActivity
 import ru.skillbranch.skillarticles.ui.base.Binding
 import ru.skillbranch.skillarticles.ui.custom.SearchFocusSpan
@@ -241,7 +242,7 @@ class RootActivity : BaseActivity<ArticleViewModel>(), IArticleView {
     }
 
     inner class ArticleBinding : Binding() {
-        var isFocsedSearch:Boolean = false
+        var isFocusedSearch:Boolean = false
         var searchQuery:String? = null
 
         private var isLoadingContent by ObserveProp(true)
@@ -327,7 +328,7 @@ class RootActivity : BaseActivity<ArticleViewModel>(), IArticleView {
         }
 
         override fun restoreUi(savedState: Bundle) {
-            isFocsedSearch = savedState.getBoolean(::isFocusedSearch.name)
+            isFocusedSearch = savedState.getBoolean(::isFocusedSearch.name)
         }
 
     }
