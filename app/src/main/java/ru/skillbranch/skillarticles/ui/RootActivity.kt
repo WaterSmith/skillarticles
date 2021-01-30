@@ -182,6 +182,7 @@ class RootActivity : BaseActivity<ArticleViewModel>(), IArticleView {
         switch_mode.setOnClickListener {viewModel.handleNightMode()}
     }
 
+    /*
     private fun renderUI(state: ArticleState) {
         btn_settings.isChecked = state.isShowMenu
         if (state.isShowMenu) submenu.open() else submenu.close()
@@ -202,7 +203,7 @@ class RootActivity : BaseActivity<ArticleViewModel>(), IArticleView {
 
         if (state.categoryIcon!=null) toolbar.logo = getDrawable(state.categoryIcon as Int)
     }
-
+*/
     private fun setupBottombar() {
         btn_like.setOnClickListener {viewModel.handleLike()}
         btn_bookmark.setOnClickListener {viewModel.handleBookmark()}

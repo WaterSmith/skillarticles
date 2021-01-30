@@ -5,5 +5,5 @@ import ru.skillbranch.skillarticles.viewmodels.ArticleState
 
 interface IViewModelState {
     fun save(outState : Bundle)
-    fun restore(outState: Bundle) : ArticleState
+    fun restore(outState: Bundle) : IViewModelState
 }
