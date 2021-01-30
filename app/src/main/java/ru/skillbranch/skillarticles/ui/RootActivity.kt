@@ -117,7 +117,6 @@ class RootActivity : BaseActivity<ArticleViewModel>(), IArticleView {
         menuInflater.inflate(R.menu.menu_search, menu)
         val searchItem = menu?.findItem(R.id.action_search)
         val searchView = (searchItem?.actionView as? SearchView)
-
         if (binding.isSearch) {
             searchItem?.expandActionView()
             searchView?.setQuery(binding.searchQuery, false)
@@ -211,12 +210,12 @@ class RootActivity : BaseActivity<ArticleViewModel>(), IArticleView {
         btn_settings.setOnClickListener {viewModel.handleToggleMenu()}
 
         btn_result_up.setOnClickListener{
-            //if(search_view.hasFocus()) search_view.clearFocus()
+            if(search_view.hasFocus()) search_view.clearFocus()
             viewModel.handleUpResult()
         }
 
         btn_result_down.setOnClickListener{
-            //if(search_view.hasFocus()) search_view.clearFocus()
+            if(search_view.hasFocus()) search_view.clearFocus()
             viewModel.handleDownResult()
         }
 
