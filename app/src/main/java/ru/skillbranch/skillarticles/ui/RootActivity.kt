@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.text.getSpans
+import androidx.core.view.isNotEmpty
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -54,6 +55,8 @@ class RootActivity : BaseActivity<ArticleViewModel>(), IArticleView {
     val bgColor by AttrValue(R.attr.colorSecondary)
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     val fgColor by AttrValue(R.attr.colorOnSecondary)
+
+    var searchView :SearchView? = null
 
     override fun setupViews() {
         setupToolbar()
@@ -116,7 +119,8 @@ class RootActivity : BaseActivity<ArticleViewModel>(), IArticleView {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_search, menu)
         val searchItem = menu?.findItem(R.id.action_search)
-        val searchView = (searchItem?.actionView as? SearchView)
+        //val searchView = (searchItem?.actionView as? SearchView)
+        searchView = (searchItem?.actionView as? SearchView)
         if (binding.isSearch) {
             searchItem?.expandActionView()
             searchView?.setQuery(binding.searchQuery, false)
@@ -210,12 +214,14 @@ class RootActivity : BaseActivity<ArticleViewModel>(), IArticleView {
         btn_settings.setOnClickListener {viewModel.handleToggleMenu()}
 
         btn_result_up.setOnClickListener{
-            if(search_view.hasFocus()) search_view.clearFocus()
+            //if(search_view.hasFocus()) search_view.clearFocus()
+            if(searchView!=null) (if(searchView!!.hasFocus()) searchView!!.clearFocus())
             viewModel.handleUpResult()
         }
 
         btn_result_down.setOnClickListener{
-            if(search_view.hasFocus()) search_view.clearFocus()
+            //if(search_view.hasFocus()) search_view.clearFocus()
+            if(searchView!=null) (if(searchView!!.hasFocus()) searchView!!.clearFocus())
             viewModel.handleDownResult()
         }
 
