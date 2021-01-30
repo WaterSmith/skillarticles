@@ -261,7 +261,7 @@ class RootActivity : BaseActivity<ArticleViewModel>(), IArticleView {
 
         private var isBigText: Boolean by RenderProp(false){
             tv_text_content.textSize = if(it) 18f else 14f
-            btn_text_down.isChecked = it
+            btn_text_up.isChecked = it
             btn_text_down.isChecked = !it
         }
         private var isDarkMode: Boolean by RenderProp(false,false){
