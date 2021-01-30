@@ -40,6 +40,7 @@ class PrefDelegate<T>(private val defaultValue: T) {
                     }
                     apply()
                 }
+                storedValue = value
             }
         }
     }
