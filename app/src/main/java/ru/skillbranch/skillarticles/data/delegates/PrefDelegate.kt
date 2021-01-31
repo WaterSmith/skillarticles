@@ -13,9 +13,10 @@ class PrefDelegate<T>(private val defaultValue: T) {
     ): ReadWriteProperty<PrefManager, T?> {
         val key:String = prop.name
         return object : ReadWriteProperty<PrefManager, T?>{
-            @Suppress("UNCHECKED_CAST")
+
             override fun getValue(thisRef: PrefManager, property: KProperty<*>): T? {
                 if (storedValue == null){
+                    @Suppress("UNCHECKED_CAST")
                     storedValue = when(defaultValue){
                         is Int -> thisRef.preferences.getInt(key, defaultValue as Int) as T
                         is Long -> thisRef.preferences.getLong(key, defaultValue as Long) as T
@@ -31,11 +32,11 @@ class PrefDelegate<T>(private val defaultValue: T) {
             override fun setValue(thisRef: PrefManager, property: KProperty<*>, value: T?) {
                 with(thisRef.preferences.edit()){
                     when(value){
-                        is Int -> putInt(key, value).apply()
-                        is Long -> putLong(key, defaultValue as Long)
-                        is Float -> putFloat(key, defaultValue as Float)
-                        is String -> putString(key, defaultValue as String)
-                        is Boolean -> putBoolean(key, defaultValue as Boolean)
+                        is Int -> putInt(key, value)
+                        is Long -> putLong(key, value)
+                        is Float -> putFloat(key, value)
+                        is String -> putString(key, value)
+                        is Boolean -> putBoolean(key, value)
                         else -> error("Only primitive types can be stored into Preferences")
                     }
                     apply()

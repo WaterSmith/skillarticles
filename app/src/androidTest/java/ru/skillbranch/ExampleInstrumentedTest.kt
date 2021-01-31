@@ -24,6 +24,8 @@ import org.junit.runner.RunWith
 import org.junit.runners.MethodSorters
 import ru.skillbranch.skillarticles.data.LocalDataHolder
 import ru.skillbranch.skillarticles.data.NetworkDataHolder
+import ru.skillbranch.skillarticles.data.delegates.PrefDelegate
+import ru.skillbranch.skillarticles.data.local.PrefManager
 import ru.skillbranch.skillarticles.extensions.indexesOf
 import ru.skillbranch.skillarticles.extensions.setMarginOptionally
 import ru.skillbranch.skillarticles.ui.RootActivity
@@ -84,6 +86,26 @@ class ExampleInstrumentedTest {
         Assert.assertEquals(0, actualBefore)
         Assert.assertEquals(112, actualAfter)
         scenario.close()
+    }
+
+    @Test
+    fun modulePref() {
+        var boolfalse : Boolean? = null
+        var booltrue : Boolean? = null
+        val scenario = ActivityScenario.launch(RootActivity::class.java)
+        scenario.onActivity { activity ->
+            //Assert.assertFalse(PrefManager(activity).storedBoolean!!)
+            boolfalse = PrefManager(activity).storedBoolean
+            PrefManager(activity).storedBoolean = true
+            booltrue = PrefManager(activity).storedBoolean
+            //System.out.println(PrefManager(activity).storedBoolean)
+            //Assert.assertTrue(PrefManager(activity).storedBoolean!!)
+            }
+        scenario.close()
+        Assert.assertNotNull(boolfalse)
+        Assert.assertFalse(boolfalse?:true)
+        Assert.assertNotNull(booltrue)
+        Assert.assertTrue(booltrue?:false)
     }
 
     @Test
